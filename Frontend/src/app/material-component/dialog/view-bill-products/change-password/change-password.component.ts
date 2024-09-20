@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { SnackbarService } from 'src/app/snackbar.service';
-import { UserService } from 'src/app/user.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-change-password',
@@ -49,13 +49,12 @@ export class ChangePasswordComponent implements OnInit {
     var data = {
       oldPassword: formDate.oldPassword,
       newPassword: formDate.newPassword,
-      confirmPassword: formDate.confirmPassword 
+      confirmPassword: formDate.confirmPassword
     }
 
     this.userService.changePassword(data).subscribe((response:any)=>{
-      this.responseMessage = response?.message;
+      this.responseMessage = response?.messag;
       this.dialogRef.close();
-      alert("Successfully Login");
       this.router.navigate(['/cafe/dashboard']);
       this.snackbarService.openSnackBar(this.responseMessage , "success");
     },(error)=>{
@@ -70,5 +69,5 @@ export class ChangePasswordComponent implements OnInit {
     );
   }
 
-  
+
 }

@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { SnackbarService } from 'src/app/snackbar.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CategoryComponent } from '../dialog/view-bill-products/category/category.component';
 
 @Component({
@@ -33,7 +33,7 @@ export class ManageCategoryComponent implements OnInit {
     },(error:any)=>{
       console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
         this.responseMessage = GlobalConstants.genericError;
       }
@@ -55,7 +55,7 @@ export class ManageCategoryComponent implements OnInit {
     const dialogRef = this.dialog.open(CategoryComponent , dialogConfog);
     this.router.events.subscribe(()=>{
       dialogRef.close();
-    }); 
+    });
     const sub = dialogRef.componentInstance.onAddCategory.subscribe((response)=>{
       this.tableData();
     })
@@ -70,7 +70,7 @@ export class ManageCategoryComponent implements OnInit {
     const dialogRef = this.dialog.open(CategoryComponent , dialogConfog);
     this.router.events.subscribe(()=>{
       dialogRef.close();
-    }); 
+    });
     const sub = dialogRef.componentInstance.onEditCatefory.subscribe((response)=>{
       this.tableData();
     })

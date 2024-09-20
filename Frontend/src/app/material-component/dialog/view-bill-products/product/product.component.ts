@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { SnackbarService } from 'src/app/snackbar.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-product',
@@ -76,8 +76,7 @@ export class ProductComponent implements OnInit {
     this.productService.add(data).subscribe((response: any) => {
       this.dialogRef.close();
       this.onAddProduct.emit();
-      this.responseMessage = response.message;
-      alert("Successfully Add Product");
+      this.responseMessage = response.messag;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
     }, (error) => {
       this.dialogRef.close();
@@ -103,9 +102,9 @@ export class ProductComponent implements OnInit {
     this.productService.update(data).subscribe((response: any) => {
       this.dialogRef.close();
       this.onEditProduct.emit();
-      this.responseMessage = response.message;
-      alert("Successfully Update Product");
-      this.snackbarService.openSnackBar(this.responseMessage, "success");
+      this.responseMessage = response.messag;
+      this.snackbarService.openSnackBar(this.responseMessage, "Success");
+
     }, (error) => {
       this.dialogRef.close();
       console.error(error);

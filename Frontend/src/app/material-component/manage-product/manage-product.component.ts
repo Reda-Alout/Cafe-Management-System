@@ -34,7 +34,7 @@ export class ManageProductComponent implements OnInit {
     },(error:any)=>{
       console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
         this.responseMessage = GlobalConstants.genericError;
       }
@@ -56,7 +56,7 @@ export class ManageProductComponent implements OnInit {
     const dialogRef = this.dialog.open(ProductComponent , dialogConfog);
     this.router.events.subscribe(()=>{
       dialogRef.close();
-    }); 
+    });
     const sub = dialogRef.componentInstance.onAddProduct.subscribe((response)=>{
       this.tableData();
     })
@@ -71,7 +71,7 @@ export class ManageProductComponent implements OnInit {
     const dialogRef = this.dialog.open(ProductComponent , dialogConfog);
     this.router.events.subscribe(()=>{
       dialogRef.close();
-    }); 
+    });
     const sub = dialogRef.componentInstance.onEditProduct.subscribe((response)=>{
       this.tableData();
     })
@@ -93,13 +93,12 @@ export class ManageProductComponent implements OnInit {
   deleteProduct(id:any){
     this.productService.delete(id).subscribe((response:any)=>{
       this.tableData();
-      this.responseMessage = response?.message;
-      //alert("Product is Deleted");
+      this.responseMessage = response?.messag;
       this.SnackbarService.openSnackBar(this.responseMessage , "success");
     },(error:any)=>{
       console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
         this.responseMessage = GlobalConstants.genericError;
       }
@@ -113,15 +112,12 @@ export class ManageProductComponent implements OnInit {
       id:id
     }
     this.productService.updateStatus(data).subscribe((response:any)=>{
-      this.responseMessage = response?.message;
-      this.SnackbarService.openSnackBar(this.responseMessage , "success");
+      this.responseMessage = response?.messag;
+      this.SnackbarService.openSnackBar(this.responseMessage , "Success");
     },(error:any)=>{
-      //console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
-        //alert("status is updated successfully");
-
         this.responseMessage = GlobalConstants.genericError;
       }
       this.SnackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);

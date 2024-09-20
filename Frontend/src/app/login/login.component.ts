@@ -4,8 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 //import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GlobalConstants } from '../shared/global-constants';
-import { SnackbarService } from '../snackbar.service';
-import { UserService } from '../user.service';
+import { SnackbarService } from '../services/snackbar.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -38,8 +38,9 @@ export class LoginComponent implements OnInit {
     var formDate = this.loginForm.value;
     var data = {
       email: formDate.email,
-      password: formDate.password  
+      password: formDate.password
     }
+
 
     this.userService.login(data).subscribe((response:any)=>{
       //this.ngxService.stop();

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -43,29 +44,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailUtil emailUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         log.info("Inside signup {}", requestMap);
         try {
             if (validaSignUpMap(requestMap)) {
-                //System.out.println("inside validaSignUpMap");
                 User user = userDao.findByEmailId(requestMap.get("email"));
                 if (Objects.isNull(user)) {
                     userDao.save(getUserFromMap(requestMap));
-                    //System.out.println("Successfully  Registered.");
                     return CafeUtils.getResponeEntity("Successfully  Registered.", HttpStatus.OK);
                 } else {
-                    //System.out.println("Email already exits.");
                     return CafeUtils.getResponeEntity("Email already exits.", HttpStatus.BAD_REQUEST);
                 }
             } else {
-                //System.out.println(CafeConstants.INVALID_DATA);
                 return CafeUtils.getResponeEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        //System.out.println(CafeConstants.SOMETHING_WENT_WRONG);
         return CafeUtils.getResponeEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -104,8 +103,9 @@ public class UserServiceImpl implements UserService {
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
-        user.setStatus(requestMap.get("status"));
+        String hashedPassword = passwordEncoder.encode(requestMap.get("password"));
+        user.setPassword(hashedPassword);
+        user.setStatus("false");
         user.setRole("user");
         return user;
     }

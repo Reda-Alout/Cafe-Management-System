@@ -155,7 +155,7 @@ public class productServiceImpl implements productService {
                     productDao.updateProductStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     return CafeUtils.getResponeEntity("Product status is updated successfully", HttpStatus.OK);
                 }
-                return CafeUtils.getResponeEntity("Product id doesn't exist", HttpStatus.OK);
+                return CafeUtils.getResponeEntity("Product id doesn't exist", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

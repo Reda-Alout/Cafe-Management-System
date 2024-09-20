@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { SnackbarService } from '../snackbar.service';
+import { SnackbarService } from '../services/snackbar.service';
 import { AuthService } from './auth.service';
 import jwt_decode from "jwt-decode";
 import { GlobalConstants } from '../shared/global-constants';
@@ -40,13 +40,13 @@ export class RouteGuardService {
         if(this.auth.isAuthenticated() && tokenPayload.role == expectedRole){
           return true;
         }
-        
+
         this.snackbarService.openSnackBar(GlobalConstants.unauthroized , GlobalConstants.error);
         this.router.navigate(['/cafe/dashboard']);
         return false;
       }
       else{
-        this.router.navigate(['/']);  
+        this.router.navigate(['/']);
         localStorage.clear();
         return false;
       }

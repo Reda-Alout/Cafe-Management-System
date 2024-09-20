@@ -3,8 +3,8 @@ import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/for
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GlobalConstants } from '../shared/global-constants';
-import { SnackbarService } from '../snackbar.service';
-import { UserService } from '../user.service';
+import { SnackbarService } from '../services/snackbar.service';
+import { UserService } from '../services/user.service';
 //import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({

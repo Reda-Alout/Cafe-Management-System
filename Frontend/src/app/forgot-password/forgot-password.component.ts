@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { GlobalConstants } from '../shared/global-constants';
-import { SnackbarService } from '../snackbar.service';
-import { UserService } from '../user.service';
+import { SnackbarService } from '../services/snackbar.service';
+import { UserService } from '../services/user.service';
 //import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
@@ -15,12 +15,12 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgotPasswordForm:any = FormGroup;
   responseMessage:any;
-  
+
   registerSucess:boolean = false;
   isButtonVisible = true;
 
-  constructor(private formBulider:FormBuilder, 
-    private userService:UserService , 
+  constructor(private formBulider:FormBuilder,
+    private userService:UserService ,
     public dialogRef:MatDialogRef<ForgotPasswordComponent> ,
     private snackbarService:SnackbarService) { }
 
@@ -35,7 +35,7 @@ export class ForgotPasswordComponent implements OnInit {
     var data = {
       email:formData.email
     }
-    
+
     this.userService.forgotPassword(data).subscribe((response:any)=>{
       //this.ngxService.stop();
       this.dialogRef.close();
@@ -50,7 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
       }
       this.snackbarService.openSnackBar(this.responseMessage , GlobalConstants.error);
     })
-    this.registerSucess=true; 
-    this.isButtonVisible = false;   
+    this.registerSucess=true;
+    this.isButtonVisible = false;
   }
 }

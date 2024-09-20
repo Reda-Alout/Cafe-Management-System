@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { BillService } from 'src/app/services/bill.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { SnackbarService } from 'src/app/snackbar.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ConfirmationComponent } from '../dialog/view-bill-products/confirmation/confirmation.component';
 import { ViewBillProductsComponent } from '../dialog/view-bill-products/view-bill-products.component';
 
@@ -74,7 +74,7 @@ export class ViewBillComponent implements OnInit {
   deleteBill(id: any) {
     this.billservice.delete(id).subscribe((response: any)=>{
       this.tableData();
-      this.responseMessage = response?.message;
+      this.responseMessage = response?.messag;
       this.SnackbarService.openSnackBar(this.responseMessage, "success");
     }, (error: any) => {
       console.log(error.error?.message);

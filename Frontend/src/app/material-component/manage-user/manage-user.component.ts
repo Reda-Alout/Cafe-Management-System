@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/user.service';
+import { UserService } from 'src/app/services/user.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from 'src/app/shared/global-constants';
@@ -31,7 +31,7 @@ export class ManageUserComponent implements OnInit {
     },(error:any)=>{
       console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
         this.responseMessage = GlobalConstants.genericError;
       }
@@ -49,15 +49,12 @@ export class ManageUserComponent implements OnInit {
       id:id
     }
     this.userService.update(data).subscribe((response:any)=>{
-      this.responseMessage = response?.message;
+      this.responseMessage = response?.messag;
       this.SnackbarService.openSnackBar(this.responseMessage , "success");
     },(error:any)=>{
-      //console.log(error.error?.message);
       if(error.error?.message){
-        this.responseMessage = error.error?.message; 
+        this.responseMessage = error.error?.message;
       }else{
-        //alert("status is updated successfully");
-
         this.responseMessage = GlobalConstants.genericError;
       }
       this.SnackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);

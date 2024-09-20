@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { LoginComponent } from '../login/login.component';
 import { SignupComponent } from '../signup/signup.component';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

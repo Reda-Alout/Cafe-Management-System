@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { DashboardService } from '../services/dashboard.service';
-import { SnackbarService } from '../snackbar.service';
+import { SnackbarService } from '../services/snackbar.service';
 //import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GlobalConstants } from '../shared/global-constants';
 
