@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Slf4j
@@ -150,6 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> checkToken() {
+
         return CafeUtils.getResponeEntity("true", HttpStatus.OK);
     }
 
@@ -189,6 +191,8 @@ public class UserServiceImpl implements UserService {
         }
         return CafeUtils.getResponeEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 
     private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {

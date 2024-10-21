@@ -4,6 +4,7 @@ import com.inn.cafe.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,6 @@ public interface UserRest {
 
     @PostMapping(path = "/forgotPassword")
     public ResponseEntity<String> forgetPassword(@RequestBody Map<String, String> requestMap);
+
+
 }

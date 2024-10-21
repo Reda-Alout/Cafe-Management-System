@@ -3,6 +3,7 @@ package com.inn.cafe.service;
 import com.inn.cafe.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,5 @@ public interface UserService {
     ResponseEntity<String> changePassword(Map<String, String> requestMap);
 
     ResponseEntity<String> forgetPassword(Map<String, String> requestMap);
+
 }

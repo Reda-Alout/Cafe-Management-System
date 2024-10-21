@@ -2,8 +2,10 @@ package com.inn.cafe.JWT;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -31,14 +33,20 @@ public class JwtFilter extends OncePerRequestFilter {
     private String username = null;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,@NonNull HttpServletResponse httpServletResponse,@NonNull FilterChain filterChain) throws ServletException, IOException {
+
+
+
         if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetpassword|/user/signup")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             String authorizationHeader = httpServletRequest.getHeader("Authorization");
             String token = null;
 
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
+            if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is missing or invalid");
+                return;
+            }else if (authorizationHeader.startsWith("Bearer")) {
                 token = authorizationHeader.substring(7);
                 username = jwtUtil.extractUsername(token);
                 claims = jwtUtil.extractAllClaims(token);

@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+
 @Slf4j
 @Service
 public class BillServiceImpl implements BillService {
@@ -119,52 +120,87 @@ public class BillServiceImpl implements BillService {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+
     @Override
     public ResponseEntity<byte[]> getPdf(Map<String, Object> requestMap) {
         log.info("Inside getPdf : requestMap {}", requestMap);
         try {
             byte[] byteArray = new byte[0];
-            if (!requestMap.containsKey("uuid") && validateResquestMap(requestMap)) {
-                return new ResponseEntity<>(byteArray, HttpStatus.BAD_REQUEST);
-            }
-            String filepath = CafeConstants.STORE_LOCATION + "\\" + (String) requestMap.get("uuid") + ".pdf";
 
-            if (CafeUtils.isFileExist(filepath)) {
+
+
+            // Obtenez le chemin de base du projet
+            String projectPath = System.getProperty("user.dir");
+
+            // Construisez le chemin complet vers le dossier CafeStoredFiles et le fichier PDF
+            String folderPath = projectPath + File.separator + "CafeStoredFiles";
+            String filepath = folderPath + File.separator + (String) requestMap.get("uuid") + ".pdf";
+
+            // Créer le dossier CafeStoredFiles s'il n'existe pas
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // Vérifiez si le fichier existe
+            File pdfFile = new File(filepath);
+            if (pdfFile.exists()) {
+                // Si le fichier existe, lisez-le en tant que tableau de bytes
                 byteArray = getByteArray(filepath);
                 return new ResponseEntity<>(byteArray, HttpStatus.OK);
             } else {
+                // Mettez à jour la map pour indiquer qu'il faut générer le fichier
                 requestMap.put("isGenerate", false);
-                generateReport(requestMap);
-                byteArray = getByteArray(filepath);
+                generateReport(requestMap);  // Générez le fichier PDF
+                byteArray = getByteArray(filepath);  // Chargez le fichier généré
                 return new ResponseEntity<>(byteArray, HttpStatus.OK);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
+
 
     @Override
     public ResponseEntity<String> delete(Integer id) {
         try {
             if (jwtFilter.isAdmin()) {
-                Optional optional = billDao.findById(id);
-                if (!optional.isEmpty()) {
+                Optional<Bill> optional = billDao.findById(id);
+
+                if (optional.isPresent()) {
+                    // Obtenez le chemin de base du projet
+                    String projectPath = System.getProperty("user.dir");
+
+                    // Construisez le chemin vers le dossier CafeStoredFiles et le fichier PDF
+                    String folderPath = projectPath + File.separator + "CafeStoredFiles";
+                    String filepath = folderPath + File.separator + optional.get().getUuid() + ".pdf";
+
+                    // Supprimez le fichier PDF s'il existe
+                    File pdfFile = new File(filepath);
+                    if (pdfFile.exists() && pdfFile.delete()) {
+                        log.info("Fichier PDF supprimé : {}", filepath);
+                    } else {
+                        log.warn("Le fichier PDF n'existe pas ou n'a pas pu être supprimé : {}", filepath);
+                    }
+
+                    // Supprimez l'entrée de la base de données
                     billDao.deleteById(id);
-                    //System.out.println("Product is deleted successfully");
+
                     return CafeUtils.getResponeEntity("Bill is deleted successfully", HttpStatus.OK);
                 }
-                //System.out.println("Product id doesn't exist");
+
                 return CafeUtils.getResponeEntity("Bill id doesn't exist", HttpStatus.OK);
             } else {
                 return CafeUtils.getResponeEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            return CafeUtils.getResponeEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return CafeUtils.getResponeEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     private void insertBill(Map<String, Object> requestMap) {
         try {
